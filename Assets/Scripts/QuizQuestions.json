@@ -1,0 +1,7 @@
+{
+  "question": "How much did each share of the Frankford Yellow Jackets cost (adjusted for inflation)?",
+  "answers": {
+    "incorrect": ["$340.21", "$331.87", "$10"],
+    "correct": "$387.31"
+  }
+}
