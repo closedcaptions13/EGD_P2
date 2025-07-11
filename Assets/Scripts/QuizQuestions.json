@@ -1,7 +1,14 @@
 {
-  "question": "How much did each share of the Frankford Yellow Jackets cost (adjusted for inflation)?",
-  "answers": {
-    "incorrect": ["$340.21", "$331.87", "$10"],
-    "correct": "$387.31"
-  }
+  "question": [
+    {
+      "problem": "How much did each share of the Frankford Yellow Jackets cost (adjusted for inflation)?",
+      "correct": "$387.31",
+      "answers": ["$340.21", "$331.87", "$10", "$387.31"]
+    },
+    {
+      "problem": "Question2 Test",
+      "correct": "correct",
+      "answers": ["incorrect1", "incorrect2", "correct", "incorrect3"]
+    }
+  ]
 }
