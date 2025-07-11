@@ -80,7 +80,8 @@ public class QuizManager : MonoBehaviour
             answerBox3.SetActive(false);
             answerBox4.SetActive(false);
 
-            resultBox.text = "Final Score: " + finalScore + "/" + questionList.question.Length;
+            double percentage = (double)finalScore / questionList.question.Length * 100;
+            resultBox.text = "Final Score: " + finalScore + "/" + questionList.question.Length + "\n\n" + string.Format("{0:F0}", percentage) + "%";
         }
 
         
