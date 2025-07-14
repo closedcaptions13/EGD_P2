@@ -5,27 +5,32 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform))]
 public class DraggableUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    Vector2 dragOffset;
+    Vector3 dragOffset;
+    Vector3 startPos;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        dragOffset = (Vector2)transform.position - eventData.position;
+        startPos = Camera.main.WorldToScreenPoint(transform.position);
+        dragOffset = startPos - (Vector3)eventData.position;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        var rectTransform = (RectTransform)transform;
-        rectTransform.position = dragOffset + eventData.position;
+        var pos = (Vector3)eventData.position + dragOffset;
+        transform.position = Camera.main.ScreenToWorldPoint(pos);
 
-        var minClamped = Vector2.Min(
-            Vector2.Max(rectTransform.offsetMin, Vector2.zero),
-            Vector2.one - rectTransform.sizeDelta
-        );
+        var rectTransform = transform as RectTransform;
+        var parentRectTransform = transform.parent as RectTransform;
 
-        var offset = minClamped - rectTransform.offsetMin;
+        var thisBounds = rectTransform.GetWorldBounds();
+        var parentBounds = parentRectTransform.GetWorldBounds();
 
-        rectTransform.offsetMin += offset;
-        rectTransform.offsetMax += offset;
+        var offset = Vector3.zero;
+
+        offset += Vector3.Max(Vector2.zero, thisBounds.min - parentBounds.min);
+        offset += Vector3.Min(Vector2.zero, thisBounds.max - parentBounds.max);
+
+        transform.position += offset;
     }
 
     public void OnEndDrag(PointerEventData eventData)

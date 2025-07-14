@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,29 +11,63 @@ using UnityEngine.SceneManagement;
 public class AppManager : MonoBehaviour
 {
     public static AppManager Instance { get; private set; }
+    public static DesktopManager Desktop { get; private set; }
+    public static VirtualFilesystem Filesystem { get; } = new();
 
     void Awake()
     {
         Instance = this;
+        Desktop = GetComponentInChildren<DesktopManager>();
 
-        // TESTING //
-        OpenApp("ExampleApp").Forget();
-        OpenApp("ExampleApp").Forget();
+        if (Desktop == null)
+        {
+            Debug.LogError($"Could not locate DesktopManager in heirarchy of AppManager.");
+        }
     }
 
     [SerializeField] AppInstance appInstancePrefab;
+    [SerializeField] PopupError errorPopupPrefab;
+    [SerializeField] SerializableDictionary<string, string> fileExtensionAssociations;
 
-    ConcurrentDictionary<string, AppInstance> openApps;
+    readonly ConcurrentDictionary<string, AppInstance> openApps = new();
     int appCounter;
 
     const int AppCounterGridSize = 10;
     const float AppCounterGridScale = 500;
 
-    public async UniTask<AppInstance> OpenApp(string name)
+    public void ShowError(string error)
     {
-        await SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+        var popup = GameObject.Instantiate(errorPopupPrefab);
+        popup.transform.SetParent(transform, false);
 
-        var scene = SceneManager.GetSceneByName(name);
+        popup.Message = error;
+    }
+
+    public void OpenApp(string name, params object[] arguments)
+    {
+        OpenAppAsync(name, arguments).Forget();
+    }
+
+    private bool isOpeningScene;
+    public async UniTask<AppInstance> OpenAppAsync(string name, params object[] arguments)
+    {
+        await UniTask.WaitUntil(() => !isOpeningScene);
+        isOpeningScene = true;
+
+        var asyncOp = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+        var scene = default(Scene);
+
+        void OnLoaded(Scene sc, LoadSceneMode mode)
+        {
+            scene = sc;
+        }
+
+        SceneManager.sceneLoaded += OnLoaded;
+
+        await asyncOp;
+        isOpeningScene = false;
+        
+        SceneManager.sceneLoaded -= OnLoaded;
         var roots = scene.GetRootGameObjects();
 
         AppRoot root;
@@ -51,7 +87,10 @@ public class AppManager : MonoBehaviour
             appCounter / AppCounterGridSize
         ) * AppCounterGridScale;
 
-        var inst = (AppInstance)GameObject.Instantiate(appInstancePrefab, scene);
+        var inst = GameObject.Instantiate(appInstancePrefab);
+
+        inst.AppRoot = root;
+        root.AssignedInstance = inst;
 
         inst.transform.SetParent(transform, false);
         inst.RenderCamera = root.GetComponentInChildren<Camera>();
@@ -66,7 +105,10 @@ public class AppManager : MonoBehaviour
 
         GameObject.Destroy(root.canvas.gameObject);
         GameObject.Destroy(inst.RenderCamera.GetComponent<AudioListener>());
-        GameObject.Destroy(root.GetComponentInChildren<EventSystem>()?.gameObject);
+        GameObject.Destroy(root.GetComponentInChildren<EventSystem>().gameObject);
+
+        root.Arguments = arguments;
+        openApps.TryAdd(name, inst);
 
         return inst;
     }
@@ -82,5 +124,54 @@ public class AppManager : MonoBehaviour
         GameObject.Destroy(inst.gameObject);
 
         SceneManager.UnloadSceneAsync(inst.Scene);
+    }
+
+    public void HandleOpenFile(string filename)
+    {
+        Debug.Log("Files: " + string.Join(", ", Filesystem.AllFiles.Select(x => $"'{x.Name}'")));
+
+        if (!Filesystem.Exists(name))
+        {
+            ShowError($"Cannot find file '{filename}'");
+            return;
+        }
+
+        var extension = Path.GetExtension(filename);
+
+        if (fileExtensionAssociations.TryGetValue(extension, out var program))
+        {
+            OpenApp(program, filename);
+        }
+        else
+        {
+            ShowError($"Unable to open a file of type {extension}");
+        }
+    }
+
+    readonly List<RaycastResult> eventSystemRaycastResults = new();
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            eventSystemRaycastResults.Clear();
+            EventSystem.current.RaycastAll(
+                new(EventSystem.current)
+                {
+                    position = Input.mousePosition,
+                },
+                eventSystemRaycastResults
+            );
+
+            var hoveredInstance = null as AppInstance;
+
+            if (eventSystemRaycastResults.Count > 0)
+            {
+                var result = eventSystemRaycastResults[0];
+                hoveredInstance = result.gameObject.GetComponentInParent<AppInstance>();
+            }
+
+            foreach (var inst in openApps.Values)
+                inst.AppRoot.IsSelectedApp = (inst == hoveredInstance);
+        }
     }
 }

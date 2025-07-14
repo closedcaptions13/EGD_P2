@@ -16,6 +16,7 @@ public class AppInstance : MonoBehaviour
     public RenderTexture RenderTexture { get; private set; }
     public Camera RenderCamera { get; set; }
     public Scene Scene { get; set; }
+    public AppRoot AppRoot { get; set; }
 
     void Awake()
     {
@@ -37,7 +38,9 @@ public class AppInstance : MonoBehaviour
     void Update()
     {
         renderView.rectTransform.GetWorldCorners(cornersArray);
-        var size = (Vector2)(cornersArray[2] - cornersArray[0]);
+        var size = (Vector2)(
+            Camera.main.WorldToScreenPoint(cornersArray[2]) -
+            Camera.main.WorldToScreenPoint(cornersArray[0]));
 
         if (size != renderViewPreviousSize || RenderTexture == null)
         {

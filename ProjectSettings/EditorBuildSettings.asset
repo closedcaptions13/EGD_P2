@@ -9,8 +9,14 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/ExampleApp.unity
+    path: Assets/Scenes/Apps/ExampleApp.unity
     guid: 23d9e2c5df5d69f44b4b73e5895bcadf
+  - enabled: 1
+    path: Assets/Scenes/Apps/Snake.unity
+    guid: 51565868560b61a4c995ebbd62adb495
+  - enabled: 1
+    path: Assets/Scenes/Apps/Notepad.unity
+    guid: fd0167bc30d45464e830a90094f56149
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
