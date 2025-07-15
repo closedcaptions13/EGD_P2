@@ -1,0 +1,54 @@
+{
+  "question": [
+    {
+      "problem": "How much did each share of the Frankford Yellow Jackets cost (adjusted for inflation)?",
+      "correct": "$387.31",
+      "answers": ["$340.21", "$331.87", "$10", "$387.31"]
+    },
+    {
+      "problem": "What year did the first NFL draft take place?",
+      "correct": "1936",
+      "answers": ["1933", "1934", "1935", "1936"]
+    },
+    {
+      "problem": "The changing of Eagles ownership between Burt Bell/Art Rooney and Alexis Thompson is known as what?",
+      "correct": "The Pennsylvania Polka",
+      "answers": [
+        "The Pennsylvania Polka",
+        "The Philadelphia Exchange",
+        "The Pennsylvania Swap of 1940",
+        "The Pennsylvania Team Trade"
+      ]
+    },
+    {
+      "problem": "What year was Chuck Bednarik drafted?",
+      "correct": "1949",
+      "answers": ["1948", "1949", "1950", "1951"]
+    },
+    {
+      "problem": "Who is the Eagles' all time leading scorer?",
+      "correct": "David Akers",
+      "answers": [
+        "Donovan McNabb",
+        "David Akers",
+        "Harold Carmichael",
+        "Pete Retzlaff"
+      ]
+    },
+    {
+      "problem": "What was the nickname given to the combined Eagles-Steelers team?",
+      "correct": "The Steagles",
+      "answers": [
+        "The Pheelers",
+        "The Pitt-Philly Team",
+        "The Birdsmiths",
+        "The Steagles"
+      ]
+    },
+    {
+      "problem": "Which Head Coach traded away LeSean McCoy to the Buffalo Bills?",
+      "correct": "Chip Kelly",
+      "answers": ["Andy Reid", "Nick Sirianni", "Chip Kelly", "Doug Pederson"]
+    }
+  ]
+}
