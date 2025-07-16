@@ -128,9 +128,7 @@ public class AppManager : MonoBehaviour
 
     public void HandleOpenFile(string filename)
     {
-        Debug.Log("Files: " + string.Join(", ", Filesystem.AllFiles.Select(x => $"'{x.Name}'")));
-
-        if (!Filesystem.Exists(name))
+        if (!Filesystem.Exists(filename))
         {
             ShowError($"Cannot find file '{filename}'");
             return;

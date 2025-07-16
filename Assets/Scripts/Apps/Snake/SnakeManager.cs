@@ -216,6 +216,4 @@ public class SnakeManager : MonoBehaviour
 
         previousDirection = direction;
     }
-
-
 }
