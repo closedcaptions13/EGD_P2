@@ -13,6 +13,8 @@ public class QuizManager : MonoBehaviour
     [SerializeField] private GameObject answerBox4;
     [SerializeField] private TMP_Text resultBox;
 
+    [SerializeField] private GameObject dragDropQuestion;
+
     public TextAsset questionsJson;
 
     private int num;
@@ -49,7 +51,7 @@ public class QuizManager : MonoBehaviour
         answerBox3.GetComponent<Button>().onClick.AddListener(() => chooseAnswer(answerBox3.GetComponent<Button>()));
         answerBox4.GetComponent<Button>().onClick.AddListener(() => chooseAnswer(answerBox4.GetComponent<Button>()));
     }
-    
+
 
     private void updateQuestion()
     {
@@ -64,10 +66,10 @@ public class QuizManager : MonoBehaviour
     {
         if (buttonNum.GetComponentInChildren<TextMeshProUGUI>().text == questionList.question[num].correct)
         {
-            finalScore++;
+            UpdateFinalScore();
         }
 
-        num++; 
+        num++;
         if (num < questionList.question.Length)
         {
             updateQuestion();
@@ -80,11 +82,20 @@ public class QuizManager : MonoBehaviour
             answerBox3.SetActive(false);
             answerBox4.SetActive(false);
 
-            double percentage = (double)finalScore / questionList.question.Length * 100;
-            resultBox.text = "Final Score: " + finalScore + "/" + questionList.question.Length + "\n\n" + string.Format("{0:F0}", percentage) + "%";
+            dragDropQuestion.SetActive(true);
         }
-
-        
     }
 
+    public void SubmitQuiz()
+    {
+        dragDropQuestion.SetActive(false);
+
+        double percentage = (double)finalScore / 13 * 100;
+        resultBox.text = "Final Score: " + finalScore + "/13\n\n" + string.Format("{0:F0}", percentage) + "%";
+    }
+
+    public void UpdateFinalScore()
+    {
+        finalScore++;
+    }
 }
