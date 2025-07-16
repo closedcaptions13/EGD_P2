@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "EGD_P2.sln"
+    "dotnet.defaultSolution": "EGD_P.sln"
 }
