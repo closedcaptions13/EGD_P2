@@ -490,7 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35942f9c277a6134a8ef8c5f0af2fa4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appName: Example App
+  appName: Snake
   canvas: {fileID: 129524846}
 --- !u!4 &1424236541
 Transform:

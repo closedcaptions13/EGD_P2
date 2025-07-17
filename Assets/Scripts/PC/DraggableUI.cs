@@ -27,8 +27,8 @@ public class DraggableUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
         var offset = Vector3.zero;
 
-        offset += Vector3.Max(Vector2.zero, thisBounds.min - parentBounds.min);
-        offset += Vector3.Min(Vector2.zero, thisBounds.max - parentBounds.max);
+        offset += Vector3.Max(Vector2.zero, parentBounds.min - thisBounds.min);
+        offset += Vector3.Min(Vector2.zero, parentBounds.max - thisBounds.max);
 
         transform.position += offset;
     }

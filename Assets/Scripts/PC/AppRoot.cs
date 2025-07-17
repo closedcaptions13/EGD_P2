@@ -1,6 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+public class AppCanvas : MonoBehaviour
+{
+    
+}
 
 public class AppRoot : MonoBehaviour
 {
@@ -25,7 +31,7 @@ public class AppRoot : MonoBehaviour
     }
 
     public static AppRoot ForScene(Scene scene)
-        => instances.GetValueOrDefault(scene);
+        => instances.GetValueOrDefault(scene) ?? throw new InvalidOperationException("Trying to get the AppRoot from a scene where there is none.");
 
     public static AppRoot ForObject(Component comp)
         => ForScene(comp.gameObject.scene);
