@@ -6,7 +6,10 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class AppManager : MonoBehaviour
 {
@@ -66,7 +69,7 @@ public class AppManager : MonoBehaviour
 
         await asyncOp;
         isOpeningScene = false;
-        
+
         SceneManager.sceneLoaded -= OnLoaded;
         var roots = scene.GetRootGameObjects();
 
@@ -97,13 +100,19 @@ public class AppManager : MonoBehaviour
         inst.SetTitle(root.appName);
         inst.Scene = scene;
 
-        for (var i = 0; i < root.canvas.transform.childCount; i++)
-        {
-            var element = root.canvas.transform.GetChild(i);
-            element.transform.SetParent(inst.RenderViewTransform, false);
-        }
+        var view = inst.VirtualCanvas.gameObject.GetComponent<AppView>();
+        view.screenCamera = inst.RenderCamera;
+        view.screenCaster = root.canvas.GetComponent<GraphicRaycaster>();
+        view.screenCaster.enabled = false;
 
-        GameObject.Destroy(root.canvas.gameObject);
+        // for (var i = 0; i < root.canvas.transform.childCount; i++)
+        // {
+        //     var element = root.canvas.transform.GetChild(i);
+        //     element.transform.SetParent(inst.RenderViewTransform, false);
+        // }
+
+        // GameObject.Destroy(root.canvas.gameObject);
+
         GameObject.Destroy(inst.RenderCamera.GetComponent<AudioListener>());
         GameObject.Destroy(root.GetComponentInChildren<EventSystem>().gameObject);
 

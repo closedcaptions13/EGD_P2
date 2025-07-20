@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Apps/Notepad.unity
     guid: fd0167bc30d45464e830a90094f56149
+  - enabled: 1
+    path: Assets/Scenes/Apps/Bluetube.unity
+    guid: 49d7a89916989bd4d9c21fbebc8bf8c0
+  - enabled: 1
+    path: Assets/Scenes/Apps/Infinite Runner.unity
+    guid: ace89e50d57a5054298004a1f3a2edcc
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

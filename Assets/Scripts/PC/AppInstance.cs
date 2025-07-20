@@ -8,11 +8,13 @@ public class AppInstance : MonoBehaviour
 {
     [SerializeField] Button exitButton;
     [SerializeField] RawImage renderView;
+    [SerializeField] Canvas virtualCanvas;
     [SerializeField] TextMeshProUGUI title;
 
     Vector2 renderViewPreviousSize;
 
     public RectTransform RenderViewTransform => renderView.rectTransform;
+    public Canvas VirtualCanvas => virtualCanvas;
     public RenderTexture RenderTexture { get; private set; }
     public Camera RenderCamera { get; set; }
     public Scene Scene { get; set; }

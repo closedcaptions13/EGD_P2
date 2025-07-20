@@ -7,6 +7,9 @@ using UnityEngine;
 /// </summary>
 public static class MathUtil
 {
+    public static Vector2 ReduceDimension(Vector3 value, Vector3 right, Vector3 up)
+        => new(Vector3.Dot(value, right), Vector3.Dot(value, up));
+
     /// <summary>
     /// Inverse lerp without unity's clamping between zero and one.
     /// </summary>

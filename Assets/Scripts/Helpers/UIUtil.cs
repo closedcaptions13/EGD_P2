@@ -8,4 +8,10 @@ public static class UIUtil
         self.GetWorldCorners(cornersResults);
         return new(cornersResults[0], cornersResults[2] - cornersResults[0]);
     }
+    public static void GetWorldMinMax(this RectTransform self, out Vector3 min, out Vector3 max)
+    {
+        self.GetWorldCorners(cornersResults);
+        min = cornersResults[0];
+        max = cornersResults[2];
+    }
 }
