@@ -13,11 +13,7 @@ public class DesktopManager : MonoBehaviour
     void Awake()
     {
         var rectTransform = transform as RectTransform;
-
-        var results = new Vector3[4];
-        rectTransform.GetWorldCorners(results);
-
-        bounds = new(results[0], results[2] - results[0]);
+        bounds = rectTransform.GetWorldBounds();
 
         AppManager.Filesystem.OnCreateFile.AddListener(CreateFileIcon);
         AppManager.Filesystem.OnDeleteFile.AddListener(DestroyFileIcon);

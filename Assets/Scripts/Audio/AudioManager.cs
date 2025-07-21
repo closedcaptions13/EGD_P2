@@ -1,4 +1,5 @@
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public enum SoundType
@@ -72,6 +73,11 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public static float TimeInLecture
+        => instance.lectureAudioSource.time;
+    public static bool LectureIsFinished
+        => instance && !instance.lectureAudioSource.isPlaying;
+
     public static void PlaySound(int sound)
     {
         if (sound == 2)
@@ -110,6 +116,12 @@ public class AudioManager : MonoBehaviour
         PauseLecture();
         instance.StartCoroutine(instance.InterruptLecture(instance.generalAudioSource, instance.barkList[(int)sound]));
     }
+    
+    public static async UniTask PlayBarkAsync(int sound)
+    {
+        PauseLecture();
+       await instance.InterruptLecture(instance.generalAudioSource, instance.barkList[(int)sound]);
+    }
 
     public static void PauseLecture()
     {
@@ -124,6 +136,7 @@ public class AudioManager : MonoBehaviour
 
     public static void ChangeLectureSpeed(float newSpeed)
     {
+        if (!instance) return;
         instance.lectureAudioSource.pitch = newSpeed;
     }
 

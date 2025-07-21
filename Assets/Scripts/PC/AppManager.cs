@@ -32,11 +32,15 @@ public class AppManager : MonoBehaviour
     [SerializeField] PopupError errorPopupPrefab;
     [SerializeField] SerializableDictionary<string, string> fileExtensionAssociations;
 
-    readonly ConcurrentDictionary<string, AppInstance> openApps = new();
+    readonly Dictionary<string, AppInstance> openApps = new();
     int appCounter;
+
+    public bool CanOpenApps { get; set; } = true;
 
     const int AppCounterGridSize = 10;
     const float AppCounterGridScale = 500;
+
+    public IReadOnlyCollection<AppInstance> OpenApps => openApps.Values;
 
     public void ShowError(string error)
     {

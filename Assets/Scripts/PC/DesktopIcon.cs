@@ -38,6 +38,9 @@ public class DesktopIcon : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (!AppManager.Instance.CanOpenApps)
+            return;
+            
         if (kind is Kind.File)
         {
             AppManager.Instance.HandleOpenFile(filename);
