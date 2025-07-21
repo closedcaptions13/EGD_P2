@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class AppCanvas : MonoBehaviour
-{
-    
-}
-
 public class AppRoot : MonoBehaviour
 {
     private readonly static Dictionary<Scene, AppRoot> instances = new();
 
     public string appName;
     public Canvas canvas;
+    public bool isDistraction;
 
     public AppInstance AssignedInstance { get; set; }
     public bool IsSelectedApp { get; set; } = true;
