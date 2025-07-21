@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SnakeManager : MonoBehaviour
 {
@@ -11,10 +12,16 @@ public class SnakeManager : MonoBehaviour
 
     [SerializeField] SmoothLineRenderer snakeRenderer;
     [SerializeField] SpriteRenderer foodRenderer;
+    [SerializeField] GameObject snakeSprite;
+
+    [SerializeField] private GameObject DeathScreen;
+    [SerializeField] private TMP_Text scoreText;
 
     Vector2Int food;
     List<Vector2Int> snake = new();
     List<Vector2Int> snakeDeltas = new();
+
+    private int foodEaten;
 
     Vector2Int previousDirection;
     Vector2Int direction;
@@ -31,6 +38,8 @@ public class SnakeManager : MonoBehaviour
 
     void ResetToStart()
     {
+        foodEaten = 0; 
+
         snake = new()
         {
             new(fieldWidth / 2, fieldHeight / 2),
@@ -46,6 +55,11 @@ public class SnakeManager : MonoBehaviour
         direction = previousDirection = Vector2Int.zero;
 
         RegenerateFood();
+    }
+
+    void Start()
+    {
+        DeathScreen.SetActive(false);
     }
 
     void Awake()
@@ -193,7 +207,11 @@ public class SnakeManager : MonoBehaviour
             if (snake.Contains(newHead))
             {
                 isMoving = false;
-                ResetToStart();
+
+                Death();
+                //ResetToStart();
+
+                //Debug.Log("Snake died");
 
                 return;
             }
@@ -204,6 +222,8 @@ public class SnakeManager : MonoBehaviour
             if (newHead == food)
             {
                 // Regenerate new food location //
+                foodEaten += 1;
+
                 RegenerateFood();
                 justGrew = true;
             }
@@ -215,5 +235,22 @@ public class SnakeManager : MonoBehaviour
         }
 
         previousDirection = direction;
+    }
+
+    void Death()
+    {
+        scoreText.text = "Total Eaten: " + foodEaten;
+        DeathScreen.SetActive(true);
+        foodRenderer.enabled = false;
+        snakeSprite.SetActive(false);
+    }
+
+    public void Restart()
+    {
+        DeathScreen.SetActive(false);
+        foodRenderer.enabled = true;
+        snakeSprite.SetActive(true);
+
+        ResetToStart();
     }
 }
