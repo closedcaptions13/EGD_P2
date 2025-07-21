@@ -7,6 +7,9 @@ using UnityEngine;
 /// </summary>
 public static class MathUtil
 {
+    public static Vector2 DegreesToVector2(float degrees)
+        => Vector2.up.Rotate(Mathf.Deg2Rad * degrees);
+
     public static Vector2 ReduceDimension(Vector3 value, Vector3 right, Vector3 up)
         => new(Vector3.Dot(value, right), Vector3.Dot(value, up));
 
@@ -40,7 +43,7 @@ public static class MathUtil
     /// Rotate a vector by the provided angle in radians.
     /// <see href="https://matthew-brett.github.io/teaching/rotation_2d.html"/>
     /// </summary>
-    public static Vector2 Rotate(Vector2 xy, float angle)
+    public static Vector2 Rotate(this Vector2 xy, float angle)
     {
         var c = Mathf.Cos(angle);
         var s = Mathf.Sin(angle);
