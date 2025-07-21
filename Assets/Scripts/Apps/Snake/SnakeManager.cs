@@ -15,6 +15,7 @@ public class SnakeManager : MonoBehaviour
     [SerializeField] GameObject snakeSprite;
 
     [SerializeField] private GameObject DeathScreen;
+    [SerializeField] private TMP_Text finalScoreText;
     [SerializeField] private TMP_Text scoreText;
 
     Vector2Int food;
@@ -38,7 +39,8 @@ public class SnakeManager : MonoBehaviour
 
     void ResetToStart()
     {
-        foodEaten = 0; 
+        foodEaten = 0;
+        scoreText.text = "Current Score: " + foodEaten;
 
         snake = new()
         {
@@ -223,6 +225,7 @@ public class SnakeManager : MonoBehaviour
             {
                 // Regenerate new food location //
                 foodEaten += 1;
+                scoreText.text = "Current Score: " + foodEaten;
 
                 RegenerateFood();
                 justGrew = true;
@@ -239,7 +242,7 @@ public class SnakeManager : MonoBehaviour
 
     void Death()
     {
-        scoreText.text = "Total Eaten: " + foodEaten;
+        finalScoreText.text = "Total Eaten: " + foodEaten;
         DeathScreen.SetActive(true);
         foodRenderer.enabled = false;
         snakeSprite.SetActive(false);
