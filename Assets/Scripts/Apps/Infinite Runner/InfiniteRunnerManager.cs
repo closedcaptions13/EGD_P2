@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class InfiniteRunnerManager : MonoBehaviour
 {
@@ -12,6 +13,13 @@ public class InfiniteRunnerManager : MonoBehaviour
 
     float lastSpawnTime;
 
+    [SerializeField] private TMP_Text time;
+
+    void Start()
+    {
+        
+    }
+    
     void Awake()
     {
         Instance = this;
@@ -32,5 +40,7 @@ public class InfiniteRunnerManager : MonoBehaviour
 
             lastSpawnTime = Time.time;
         }
+
+        time.text = $"Time: {Time.timeSinceLevelLoad.ToString("F2")}";
     }
 }

@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class InfiniteRunnerPlayer : MonoBehaviour
@@ -17,6 +19,17 @@ public class InfiniteRunnerPlayer : MonoBehaviour
 
     bool isGrounded;
     JetpackState jetpack;
+
+    private RigidbodyConstraints2D originalConstraints;
+
+    [SerializeField] private GameObject deathScreen;
+    [SerializeField] private TMP_Text finalTime;
+
+    void Start()
+    {
+        originalConstraints = GetComponent<Rigidbody2D>().constraints;
+        deathScreen.SetActive(false);
+    }
 
     void Awake()
     {
@@ -69,6 +82,11 @@ public class InfiniteRunnerPlayer : MonoBehaviour
         if (isDeath || collision.gameObject.layer == LayerMask.NameToLayer("Damage"))
         {
             Debug.Log($"{Time.time} :: you died fucking idiot kys");
+
+            deathScreen.SetActive(true);
+            finalTime.text = $"Final Time: {Time.timeSinceLevelLoad.ToString("F2")}";
+            Time.timeScale = 0;
+            Rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         }
     }
 
@@ -76,5 +94,14 @@ public class InfiniteRunnerPlayer : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
             isGrounded = false;
+    }
+
+    public void Restart()
+    {
+        Rigidbody.constraints = originalConstraints;
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Infinite Runner");
+        // deathScreen.SetActive(false);
+        
     }
 }
