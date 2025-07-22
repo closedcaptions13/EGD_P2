@@ -10,15 +10,19 @@ public class GameManager : MonoBehaviour
 {
     float speedupEffect = 0;
     float targetSpeedupEffect = 0;
-    float timeOfLastSpeedup = 0;
+    float timeOfStartDistraction = 0;
+    float timeOfEndDistraction = 0;
     float timeOfStartActualSpeedup = 0;
+    bool isEndingDistraction = false;
     bool isDistracted = false;
     bool isSpeedingUp = false;
 
     [Header("Timing")]
     [SerializeField] float speedupSharpness = 5;
+    [SerializeField] float slowdownSharpness = 5;
     [SerializeField] float fastSpeed = 6;
     [SerializeField] float timeToSpeedup = 5;
+    [SerializeField] float timeDistractionHeld = 10;
     [SerializeField] float timeToYell = 60 * 5;
 
     [Header("Professor References")]
@@ -27,6 +31,21 @@ public class GameManager : MonoBehaviour
     [Header("Laptop References")]
     [SerializeField] RenderTexture laptopTexture;
     [SerializeField] AppView laptopView;
+
+    private int timesBarked = 0;
+    public int GetBarkID()
+    {
+        var id = timesBarked switch
+        {
+            0 => (int)SpecificBarks.GENERICBARK1,
+            1 => (int)SpecificBarks.GENERICBARK2,
+            _ => (int)SpecificBarks.GENERICBARK3
+        };
+
+        timesBarked++;
+
+        return id;
+    }
 
     public async UniTask Yell()
     {
@@ -39,11 +58,10 @@ public class GameManager : MonoBehaviour
 
         AppManager.Instance.CanOpenApps = false;
 
-        Debug.Log("YELL");
         profAnimator.Play("profBark", 0);
-        await AudioManager.PlayBarkAsync((int)SpecificBarks.GENERICBARK1);
-        speedupEffect = 0;
         AudioManager.ChangeLectureSpeed(1);
+        await AudioManager.PlayBarkAsync(GetBarkID());
+        speedupEffect = 0;
 
         AppManager.Instance.CanOpenApps = true;
     }
@@ -54,9 +72,9 @@ public class GameManager : MonoBehaviour
         AudioManager.PlaySound(SoundType.STARTQUIZ);
 
         AppManager.Instance.CanOpenApps = false;
+        AppManager.Instance.CanCloseApps = false;
         AppManager.Instance.OpenApp("Quiz");
 
-        // TODO: actual async logic here //
         await UniTask.Yield();
     }
 
@@ -90,16 +108,28 @@ public class GameManager : MonoBehaviour
         {
             if (!isDistracted)
             {
-                timeOfLastSpeedup = Time.timeSinceLevelLoad;
+                timeOfStartDistraction = Time.timeSinceLevelLoad;
                 isDistracted = true;
             }
+
+            isEndingDistraction = false;
         }
         else
         {
-            isDistracted = false;
+            if (!isEndingDistraction)
+            {
+                timeOfEndDistraction = Time.timeSinceLevelLoad;
+                isEndingDistraction = true;
+            }
         }
 
-        var shouldSpeedUp = isDistracted && Time.timeSinceLevelLoad - timeOfLastSpeedup > timeToSpeedup;
+        if (isEndingDistraction && Time.timeSinceLevelLoad - timeOfEndDistraction > timeDistractionHeld)
+        {
+            isDistracted = false;
+            isEndingDistraction = false;
+        }
+
+        var shouldSpeedUp = isDistracted && Time.timeSinceLevelLoad - timeOfStartDistraction > timeToSpeedup;
         targetSpeedupEffect = shouldSpeedUp ? 1 : 0;
 
         if (shouldSpeedUp)
@@ -124,7 +154,7 @@ public class GameManager : MonoBehaviour
         speedupEffect = MathUtil.EaseTowards(
             speedupEffect,
             targetSpeedupEffect,
-            speedupSharpness,
+            speedupEffect < targetSpeedupEffect ? speedupSharpness : slowdownSharpness,
             Time.deltaTime);
 
         AudioManager.ChangeLectureSpeed(Mathf.Lerp(1, fastSpeed, speedupEffect));

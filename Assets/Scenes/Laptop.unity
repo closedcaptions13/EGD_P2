@@ -763,6 +763,9 @@ MonoBehaviour:
   - appName: Broho Project
     displayName: 'Broho [RE::V|V3]'
     iconSprite: {fileID: 21300000, guid: 5a1310984fe36234bbb1bb43c8888a3c, type: 3}
+  - appName: Powerpoint
+    displayName: Presentationator
+    iconSprite: {fileID: 21300000, guid: 9cd4c438122e97e41b6a913bf77736d3, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

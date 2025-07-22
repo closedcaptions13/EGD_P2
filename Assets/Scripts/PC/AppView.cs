@@ -12,6 +12,8 @@ public class AppView : GraphicRaycaster
     public GraphicRaycaster screenCaster; // Reference to the GraphicRaycaster of the canvas displayed on the virtual screen
     public RectTransform RectTransform => (RectTransform)transform;
 
+    public static AppView Hit { get; private set; }
+
     private void RaycastAttempt(PointerEventData eventData, Vector3 pos, List<RaycastResult> resultAppendList)
     {
         // Figure out where the pointer would be in the second camera based on texture position or RenderTexture.
@@ -36,11 +38,15 @@ public class AppView : GraphicRaycaster
         // result list, since doing so introduces z-fighting
         resultAppendList.Clear();
         screenCaster.Raycast(eventData, resultAppendList);
+
+        Hit = this;
     }
 
     // Called by Unity when a Raycaster should raycast because it extends BaseRaycaster.
     public override void Raycast(PointerEventData eventData, List<RaycastResult> resultAppendList)
     {
+        Hit = null;
+
         base.Raycast(eventData, resultAppendList);
         var count = resultAppendList.Count;
         for (var i = count - 1; i >= 0; i--)

@@ -1264,9 +1264,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35942f9c277a6134a8ef8c5f0af2fa4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appName: Broho Prime
+  appName: 'Broho [RE::V|V3]'
   canvas: {fileID: 129524846}
-  isDistraction: 0
+  isDistraction: 1
 --- !u!4 &1424236541
 Transform:
   m_ObjectHideFlags: 0

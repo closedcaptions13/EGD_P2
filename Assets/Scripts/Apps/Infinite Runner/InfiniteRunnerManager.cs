@@ -15,23 +15,39 @@ public class InfiniteRunnerManager : MonoBehaviour
 
     [SerializeField] private TMP_Text time;
 
+    public static bool WasPlaying { get; private set; }
+    public static bool IsPlaying { get; private set; }
+    public static bool JustStartedPlaying => IsPlaying && !WasPlaying;
+
+    public void StartPlaying()
+    {
+        lastSpawnTime = Time.time;
+        IsPlaying = true;
+    }
+
+    public void StopPlaying()
+    {
+        IsPlaying = false;
+    }
+
     void Start()
     {
-        
+        StartPlaying();
     }
-    
+
     void Awake()
     {
         Instance = this;
-        lastSpawnTime = Time.time;
     }
 
     void Update()
     {
+        WasPlaying = IsPlaying;
+
         // TODO: increase over time //
         var spawnTime = spawnRate;
 
-        if (Time.time - lastSpawnTime > spawnTime)
+        if (IsPlaying && Time.time - lastSpawnTime > spawnTime)
         {
             var choice = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
 

@@ -19,6 +19,7 @@ public class AppInstance : MonoBehaviour
     public Camera RenderCamera { get; set; }
     public Scene Scene { get; set; }
     public AppRoot AppRoot { get; set; }
+    public AppView AppView { get; set; }
 
     void Awake()
     {
@@ -27,7 +28,8 @@ public class AppInstance : MonoBehaviour
 
     void CloseSelf()
     {
-        AppManager.Instance.CloseApp(this);
+        if(AppManager.Instance.CanCloseApps)
+            AppManager.Instance.CloseApp(this);
     }
 
     public void SetTitle(string title)
