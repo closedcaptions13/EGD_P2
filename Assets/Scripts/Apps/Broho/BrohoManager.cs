@@ -13,6 +13,8 @@ public class BrohoManager : MonoBehaviour
     [SerializeField] private BrohoWarning circleWarningPrefab;
     [SerializeField] private BrohoWarning lineWarningPrefab;
 
+    private BrohoPlayer player;
+
     public bool IsWithinLevel(Vector2 point)
     {
         var bounds = levelBounds.bounds;
@@ -23,6 +25,7 @@ public class BrohoManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        player = FindAnyObjectByType<BrohoPlayer>();
     }
 
     public const float StandardTelegraphTime = 1.2f;
@@ -41,36 +44,92 @@ public class BrohoManager : MonoBehaviour
         inst.position = position;
         inst.velocity = velocity;
         inst.acceleration = acceleration;
-        inst.kind = BrohoObstacle.Kind.Linear;
     }
 
-    public void ObstacleWave(BrohoObstacle prefab, Vector2 position, Vector2 velocity, float waveRate, float waveAmp, float acceleration = 0)
+    public async UniTask ExecuteRandomFliers()
     {
-        var inst = GameObject.Instantiate(prefab, transform);
-        inst.position = position;
-        inst.velocity = velocity;
-        inst.acceleration = acceleration;
-        inst.waveRate = waveRate;
-        inst.waveAmplitude = waveAmp;
-        inst.kind = BrohoObstacle.Kind.Wave;
+        await UniTask.WaitForSeconds(10);
+
+        var startTime = Time.time;
+
+        while (true)
+        {
+            var angle = UnityEngine.Random.Range(0, 360f);
+            StartCoroutine(ExecuteSpearAt(
+                (Vector2)player.transform.localPosition
+                    + UnityEngine.Random.insideUnitCircle * 1.0f
+                    - MathUtil.DegreesToVector2(angle) * 10,
+                angle
+            ).ToCoroutine());
+
+            var tfac = 5 * Mathf.Pow(0.98f, Time.time - startTime) + 0.1f;
+            await UniTask.WaitForSeconds(UnityEngine.Random.Range(StandardTelegraphTime * tfac, 0));
+        }
+    }
+
+    public async UniTask ExecuteCornerKillers()
+    {
+        await UniTask.WaitForSeconds(20);
+
+        while (true)
+        {
+            const float Radius = 10;
+            StartCoroutine(ExecuteBurstAt(new Vector2(-1, -1) * Radius, 25, 10).ToCoroutine());
+            StartCoroutine(ExecuteBurstAt(new Vector2(+1, -1) * Radius, 25, 10).ToCoroutine());
+            StartCoroutine(ExecuteBurstAt(new Vector2(+1, +1) * Radius, 25, 10).ToCoroutine());
+            StartCoroutine(ExecuteBurstAt(new Vector2(-1, +1) * Radius, 25, 10).ToCoroutine());
+
+            await UniTask.WaitForSeconds(StandardTelegraphTime * 4);
+        }
     }
 
     public async UniTask ExecutePatterns()
     {
+        IsPlaying = true;
+
+        var startTime = Time.time;
+        float WaitTime()
+            => Mathf.Lerp(StandardTelegraphTime * 1.5f, StandardTelegraphTime * 0.7f, 1 - Mathf.Pow(0.99f, Time.time - startTime));
+
+        StartCoroutine(ExecuteRandomFliers().ToCoroutine());
+        StartCoroutine(ExecuteCornerKillers().ToCoroutine());
+
         while (true)
         {
-            ExecuteBurstAt(UnityEngine.Random.insideUnitCircle * 5).Forget();
-            await UniTask.WaitForSeconds(1.5f);
+            StartCoroutine(ExecuteBurstAt(UnityEngine.Random.insideUnitCircle * 5).ToCoroutine());
+            await UniTask.WaitForSeconds(WaitTime());
 
-            var loc = UnityEngine.Random.insideUnitCircle * 5;
-            ExecuteSpearWallAt(loc, Vector2.SignedAngle(Vector2.left, loc) - 90, 1.5f, 10).Forget();
-            await UniTask.WaitForSeconds(1.5f);
+            var repeatSpearWall = UnityEngine.Random.value < 0.3f ? 2 : 1;
+            for (int i = 0; i < repeatSpearWall; i++)
+            {
+                var loc = UnityEngine.Random.insideUnitCircle * 5;
+                StartCoroutine(ExecuteSpearWallAt(loc, Vector2.SignedAngle(Vector2.left, loc) - 90, 1.5f, 10).ToCoroutine());
+                await UniTask.WaitForSeconds(WaitTime());
+            }
+
+            if (UnityEngine.Random.value < 0.2f)
+            {
+                var angle = UnityEngine.Random.Range(0, 360f);
+                StartCoroutine(ExecuteWaveWall(angle + 000, 3f, 0.0f, 20).ToCoroutine());
+                StartCoroutine(ExecuteWaveWall(angle + 090, 3f, 0.0f, 20).ToCoroutine());
+                StartCoroutine(ExecuteWaveWall(angle + 180, 3f, 1.5f, 20).ToCoroutine());
+                StartCoroutine(ExecuteWaveWall(angle + 270, 3f, 1.5f, 20).ToCoroutine());
+
+                await UniTask.WaitForSeconds(WaitTime() * 2f);
+            }
         }
     }
 
-    public async UniTask ExecuteBurstAt(Vector2 location, int radialCount = 10)
+    public async UniTask ExecuteBurstAt(Vector2 location, int radialCount = 10, float speed = 1)
     {
         Warning(circleWarningPrefab, location, 0, StandardTelegraphTime);
+
+        for (var i = 0; i < radialCount; i++)
+        {
+            var angle = i * 360f / radialCount;
+            Warning(lineWarningPrefab, location, angle, StandardTelegraphTime);
+        }
+
         await UniTask.WaitForSeconds(StandardTelegraphTime);
 
         for (var i = 0; i < radialCount; i++)
@@ -78,7 +137,7 @@ public class BrohoManager : MonoBehaviour
             var angle = i * 360f / radialCount;
             var vec = MathUtil.DegreesToVector2(angle);
 
-            ObstacleLinear(bulletPrefab, location, vec, 10f);
+            ObstacleLinear(bulletPrefab, location, vec * speed, 10f);
         }
     }
 
@@ -95,18 +154,51 @@ public class BrohoManager : MonoBehaviour
     {
         for (var i = 0; i < count; i++)
         {
-            ExecuteSpearAt(
+            StartCoroutine(ExecuteSpearAt(
                 location + (count / 2f - i) * apart * MathUtil.DegreesToVector2(angle + 90),
                 angle
-            ).Forget();
+            ).ToCoroutine());
 
             await UniTask.WaitForSeconds(1f / count);
         }
-        
+    }
+
+    public async UniTask ExecuteWaveWall(float angle, float apart, float offset, int count, float distance = 10)
+    {
+        var direction = MathUtil.DegreesToVector2(angle);
+
+        var loc = -direction * distance;
+        var axs = direction.Rotate(Mathf.Deg2Rad * 90);
+
+        for (var i = 0; i < count; i++)
+        {
+            StartCoroutine(ExecuteSpearAt(
+                loc + (offset + (count / 2f - i) * apart) * axs,
+                angle
+            ).ToCoroutine());
+        }
+
+        await UniTask.Yield();
+    }
+
+    public void KillGameplay()
+    {
+        StopAllCoroutines();
+        IsPlaying = false;
+    }
+
+    public bool IsPlaying { get; private set; }
+    public float TimeAtStart { get; private set; }
+    public float ClockTime => Time.time - TimeAtStart;
+
+    public void BeginGameplay()
+    {
+        StartCoroutine(ExecutePatterns().ToCoroutine());
+        TimeAtStart = Time.time;
     }
 
     void Start()
     {
-        ExecutePatterns().Forget();
+        BeginGameplay();
     }
 }

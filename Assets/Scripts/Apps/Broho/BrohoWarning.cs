@@ -16,6 +16,9 @@ public class BrohoWarning : MonoBehaviour
 
     void Update()
     {
+        if(!BrohoManager.Instance.IsPlaying)
+            GameObject.Destroy(gameObject);
+
         transform.localPosition = new(
             position.x,
             position.y,

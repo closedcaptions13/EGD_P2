@@ -2,44 +2,39 @@ using UnityEngine;
 
 public class BrohoObstacle : MonoBehaviour
 {
-    public enum Kind
-    {
-        Linear,
-        Wave
-    }
-
     public Vector2 position;
     public Vector2 velocity;
     public float acceleration;
-    public float waveAmplitude;
-    public float waveRate;
-    public Kind kind;
+
+    public Rigidbody2D Rigidbody { get; private set; }
+
+    void Start()
+    {
+        Rigidbody = GetComponent<Rigidbody2D>();
+
+        transform.localPosition = position;
+        Rigidbody.linearVelocity = velocity;
+    }
 
     void Update()
     {
-        position += velocity * Time.deltaTime;
-        velocity = (velocity.magnitude + Time.deltaTime * acceleration) * velocity.normalized;
+        if (!BrohoManager.Instance.IsPlaying)
+            GameObject.Destroy(gameObject);
 
-        var realPosition = position;
-        if (kind is Kind.Wave)
+        if (!BrohoManager.Instance.IsWithinLevel(transform.position))
         {
-            realPosition += Mathf.Sin(Time.time * waveRate) * waveAmplitude * new Vector2(-velocity.y, velocity.x).normalized;
+            GameObject.Destroy(gameObject);
         }
+    }
+
+    void FixedUpdate()
+    {
+        Rigidbody.linearVelocity = (Rigidbody.linearVelocity.magnitude + Time.fixedDeltaTime * acceleration) * Rigidbody.linearVelocity.normalized;
 
         transform.localEulerAngles = new(
             transform.localEulerAngles.x,
             transform.localEulerAngles.y,
             Vector2.SignedAngle(Vector2.up, velocity)
         );
-
-        transform.localPosition = new(
-            realPosition.x,
-            realPosition.y,
-            transform.localPosition.z);
-
-        if (!BrohoManager.Instance.IsWithinLevel(transform.position))
-        {
-            GameObject.Destroy(gameObject);
-        }
     }
 }

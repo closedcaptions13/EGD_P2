@@ -35,24 +35,21 @@ public class AppInstance : MonoBehaviour
         this.title.text = title;
     }
 
-    readonly Vector3[] cornersArray = new Vector3[4];
-
     void Update()
     {
-        renderView.rectTransform.GetWorldCorners(cornersArray);
-        var size = (Vector2)(
-            Camera.main.WorldToScreenPoint(cornersArray[2]) -
-            Camera.main.WorldToScreenPoint(cornersArray[0]));
+        var size = renderView.rectTransform.GetWorldBounds().size;
 
         if (size != renderViewPreviousSize || RenderTexture == null)
         {
             CleanupRenderTexure();
 
-            RenderTexture = new((int)size.x, (int)size.y, 32);
+            RenderTexture = new(750 * (int)size.x / (int)size.y, 750, 32);
             RenderTexture.Create();
 
             RenderCamera.targetTexture = RenderTexture;
             renderView.texture = RenderTexture;
+
+            renderViewPreviousSize = size;
         }
     }
 

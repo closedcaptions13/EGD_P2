@@ -23,6 +23,14 @@ public class BrohoPlayer : MonoBehaviour
         velocity.Normalize();
         velocity *= moveSpeed * Time.deltaTime;
 
-        transform.position += (Vector3) velocity;
+        transform.position += (Vector3)velocity;
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Damage"))
+        {
+            BrohoManager.Instance.KillGameplay();
+        }
     }
 }
