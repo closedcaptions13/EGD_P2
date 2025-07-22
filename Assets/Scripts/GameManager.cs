@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviour
     [Header("Professor References")]
     [SerializeField] Animator profAnimator;
 
+    [Header("UI References")]
+    [SerializeField] GameObject distractedWarning;
+    [SerializeField] GameObject bustedDisplay;
+
     [Header("Laptop References")]
     [SerializeField] RenderTexture laptopTexture;
     [SerializeField] AppView laptopView;
@@ -57,11 +61,15 @@ public class GameManager : MonoBehaviour
         }
 
         AppManager.Instance.CanOpenApps = false;
+        bustedDisplay.SetActive(true);
 
         profAnimator.Play("profBark", 0);
         AudioManager.ChangeLectureSpeed(1);
         await AudioManager.PlayBarkAsync(GetBarkID());
         speedupEffect = 0;
+        
+        profAnimator.Play("profBarkDone", 0);
+        bustedDisplay.SetActive(false);
 
         AppManager.Instance.CanOpenApps = true;
     }
@@ -81,7 +89,11 @@ public class GameManager : MonoBehaviour
     IEnumerator Start()
     {
         // Set up render texture for laptop //
-        yield return SceneManager.LoadSceneAsync("Laptop", LoadSceneMode.Additive);
+        var result = SceneManager.LoadSceneAsync("Laptop", LoadSceneMode.Additive);
+
+        while (!result.isDone)
+            yield return null;
+
         var scene = SceneManager.GetSceneByName("Laptop");
         var root = scene.GetRootGameObjects()[0];
         var camera = root.GetComponentInChildren<Camera>();
@@ -151,6 +163,8 @@ public class GameManager : MonoBehaviour
             Yell().Forget();
         }
 
+        distractedWarning.SetActive(isSpeedingUp && !bustedDisplay.activeInHierarchy);
+
         speedupEffect = MathUtil.EaseTowards(
             speedupEffect,
             targetSpeedupEffect,
@@ -159,7 +173,8 @@ public class GameManager : MonoBehaviour
 
         AudioManager.ChangeLectureSpeed(Mathf.Lerp(1, fastSpeed, speedupEffect));
 
-        if (AudioManager.LectureIsFinished || Input.GetKeyDown(KeyCode.Alpha9))
+        var debugSkipLecture = Input.GetKeyDown(KeyCode.Alpha9) && Input.GetKeyDown(KeyCode.LeftAlt);
+        if (AudioManager.LectureIsFinished || debugSkipLecture)
         {
             FinishLecture().Forget();
         }
