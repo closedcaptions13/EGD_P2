@@ -36,6 +36,17 @@ public class InfiniteRunnerPlayer : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody2D>();
     }
 
+    void FixedUpdate()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            if (jetpack is JetpackState.Usable)
+            {
+                Rigidbody.AddForce(Vector2.up * jetpackForce);
+            }
+        }
+    }
+
     void Update()
     {
         if (isGrounded)
@@ -53,14 +64,7 @@ public class InfiniteRunnerPlayer : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.Space))
-        {
-            if (jetpack is JetpackState.Usable)
-            {
-                Rigidbody.AddForce(Vector2.up * jetpackForce);
-            }
-        }
-        else
+        if (!Input.GetKey(KeyCode.Space))
         {
             if (jetpack is JetpackState.JustJumped)
             {
@@ -83,8 +87,9 @@ public class InfiniteRunnerPlayer : MonoBehaviour
         {
             deathScreen.SetActive(true);
             finalTime.text = $"Final Time: {Time.timeSinceLevelLoad.ToString("F2")}";
-            Time.timeScale = 0;
             Rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            
+            InfiniteRunnerManager.Instance.StopPlaying();
         }
     }
 
@@ -97,9 +102,8 @@ public class InfiniteRunnerPlayer : MonoBehaviour
     public void Restart()
     {
         Rigidbody.constraints = originalConstraints;
-        Time.timeScale = 1;
-        SceneManager.LoadScene("Infinite Runner");
-        // deathScreen.SetActive(false);
+        InfiniteRunnerManager.Instance.StartPlaying();
         
+        deathScreen.SetActive(false);
     }
 }

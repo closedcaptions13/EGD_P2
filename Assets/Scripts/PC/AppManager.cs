@@ -36,6 +36,7 @@ public class AppManager : MonoBehaviour
     int appCounter;
 
     public bool CanOpenApps { get; set; } = true;
+    public bool CanCloseApps { get; set; } = true;
 
     const int AppCounterGridSize = 10;
     const float AppCounterGridScale = 500;
@@ -58,6 +59,9 @@ public class AppManager : MonoBehaviour
     private bool isOpeningScene;
     public async UniTask<AppInstance> OpenAppAsync(string name, params object[] arguments)
     {
+        if (openApps.ContainsKey(name))
+            return GetApp(name);
+
         await UniTask.WaitUntil(() => !isOpeningScene);
         isOpeningScene = true;
 
@@ -108,6 +112,9 @@ public class AppManager : MonoBehaviour
         view.screenCamera = inst.RenderCamera;
         view.screenCaster = root.canvas.GetComponent<GraphicRaycaster>();
         view.screenCaster.enabled = false;
+        inst.AppView = view;
+
+        windowMappings.Add(view, inst);
 
         // for (var i = 0; i < root.canvas.transform.childCount; i++)
         // {
@@ -134,11 +141,12 @@ public class AppManager : MonoBehaviour
     public void CloseApp(AppInstance inst)
     {
         openApps.Remove(inst.Scene.name);
-        
+
         inst.CleanupRenderTexure();
         GameObject.Destroy(inst.gameObject);
 
         SceneManager.UnloadSceneAsync(inst.Scene);
+        windowMappings.Remove(inst.AppView);
     }
 
     public void HandleOpenFile(string filename)
@@ -177,14 +185,19 @@ public class AppManager : MonoBehaviour
 
             var hoveredInstance = null as AppInstance;
 
-            if (eventSystemRaycastResults.Count > 0)
+            if (AppView.Hit)
             {
-                var result = eventSystemRaycastResults[0];
-                hoveredInstance = result.gameObject.GetComponentInParent<AppInstance>();
+                var result = AppView.Hit;
+                var inst = windowMappings.GetValueOrDefault(result);
+
+                if (inst)
+                    hoveredInstance = inst;
             }
 
             foreach (var inst in openApps.Values)
                 inst.AppRoot.IsSelectedApp = (inst == hoveredInstance);
         }
     }
+
+    private readonly Dictionary<AppView, AppInstance> windowMappings = new();
 }

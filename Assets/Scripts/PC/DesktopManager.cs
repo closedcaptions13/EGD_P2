@@ -9,6 +9,7 @@ public class DesktopManager : MonoBehaviour
     readonly List<DesktopIcon> allIcons = new();
 
     Rect bounds;
+    const int GridCount = 5;
 
     void Awake()
     {
@@ -40,9 +41,12 @@ public class DesktopManager : MonoBehaviour
         var icon = GameObject.Instantiate(iconPrefab);
         icon.transform.SetParent(transform, false);
 
+        var xmod = allIcons.Count % GridCount;
+        var ymod = allIcons.Count / GridCount;
+
         var pos = icon.transform.position;
-        pos.x = UnityEngine.Random.Range(bounds.xMin, bounds.xMax);
-        pos.y = UnityEngine.Random.Range(bounds.yMin, bounds.yMax);
+        pos.x = Mathf.Lerp(bounds.xMin, bounds.xMax, (xmod + .5f) / GridCount);
+        pos.y = Mathf.Lerp(bounds.yMin, bounds.yMax, (ymod + .5f) / GridCount);
         pos.z = transform.position.z;
         icon.transform.position = pos;
 

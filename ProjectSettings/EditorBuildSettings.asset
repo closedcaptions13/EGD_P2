@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Model_test.unity
+    guid: d562fda86114ffe4d84007036d1aebe2
+  - enabled: 1
     path: Assets/Scenes/Laptop.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/Scenes/Apps/ExampleApp.unity
-    guid: 23d9e2c5df5d69f44b4b73e5895bcadf
   - enabled: 1
     path: Assets/Scenes/Apps/Snake.unity
     guid: 51565868560b61a4c995ebbd62adb495
@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Apps/Broho Project.unity
     guid: e184f58f16bf41a41afb92433a40c461
+  - enabled: 1
+    path: Assets/Scenes/Apps/Powerpoint.unity
+    guid: 40b99e29ac4900949ae379335f4d9218
   - enabled: 1
     path: Assets/Scenes/Apps/Quiz.unity
     guid: d3eca3e534a8e744e9abacf89021ee9a

@@ -48,15 +48,13 @@ public class BrohoPlayer : MonoBehaviour
     {
         finalTime.text = $"Final Time: {BrohoManager.Instance.GetCurrTime().ToString("F2")}";
         deathScreen.SetActive(true);
-        Time.timeScale = 0;
+        BrohoManager.Instance.KillGameplay();
     }
 
     public void Restart()
     {
         deathScreen.SetActive(false);
-        Time.timeScale = 1;
-        //BrohoManager.Instance.BeginGameplay();
-        //Instantiate(BrohoManager.Instance);
+        BrohoManager.Instance.BeginGameplay();
 
     }
 }

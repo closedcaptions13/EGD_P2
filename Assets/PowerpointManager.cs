@@ -55,7 +55,7 @@ public class PowerpointManager : MonoBehaviour
 
 
 // Update is called once per frame
-void Update()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow) || (Input.GetKeyDown(KeyCode.DownArrow)))
         {
@@ -66,7 +66,6 @@ void Update()
                 currentSlide = 0;
             }
 
-            Debug.Log(Slides[currentSlide]);
             displayslide.texture = Slides[currentSlide];
         }
 
@@ -79,7 +78,6 @@ void Update()
                 currentSlide = Slides.Length - 1;
             }
 
-            Debug.Log(Slides[currentSlide]);
             displayslide.texture = Slides[currentSlide];
         }
     }
