@@ -60,6 +60,9 @@ public class InfiniteRunnerManager : MonoBehaviour
             lastSpawnTime = Time.time;
         }
 
-        time.text = $"Time: {Time.time - playTime:F2}";
+        if (IsPlaying)
+        {
+            time.text = $"Time: {(Time.time - playTime):F2}";
+        }
     }
 }

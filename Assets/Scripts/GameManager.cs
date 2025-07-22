@@ -59,10 +59,13 @@ public class GameManager : MonoBehaviour
             if (app.AppRoot.isDistraction)
                 AppManager.Instance.CloseApp(app);
         }
+        
+        speedupEffect = 0;
 
         AppManager.Instance.CanOpenApps = false;
         bustedDisplay.SetActive(true);
 
+        profAnimator.speed = 1;
         profAnimator.Play("profBark", 0);
         AudioManager.ChangeLectureSpeed(1);
         await AudioManager.PlayBarkAsync(GetBarkID());
@@ -172,8 +175,9 @@ public class GameManager : MonoBehaviour
             Time.deltaTime);
 
         AudioManager.ChangeLectureSpeed(Mathf.Lerp(1, fastSpeed, speedupEffect));
+        profAnimator.speed = Mathf.Lerp(1, fastSpeed, speedupEffect);
 
-        var debugSkipLecture = Input.GetKeyDown(KeyCode.Alpha9) && Input.GetKeyDown(KeyCode.LeftAlt);
+        var debugSkipLecture = Input.GetKeyDown(KeyCode.Alpha9) && Input.GetKey(KeyCode.LeftAlt);
         if (AudioManager.LectureIsFinished || debugSkipLecture)
         {
             FinishLecture().Forget();
