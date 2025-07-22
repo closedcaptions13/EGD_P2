@@ -4,7 +4,7 @@ public class InfiniteRunnerObstacle : MonoBehaviour
 {
     void Update()
     {
-        if (InfiniteRunnerManager.JustStartedPlaying)
+        if (!InfiniteRunnerManager.IsPlaying)
         {
             GameObject.Destroy(gameObject);
         }

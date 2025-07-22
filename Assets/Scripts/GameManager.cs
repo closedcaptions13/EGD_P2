@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         await AudioManager.PlayBarkAsync(GetBarkID());
         speedupEffect = 0;
         
-        profAnimator.Play("profBarkDone", 0);
+        profAnimator.Play("profMove", 0);
         bustedDisplay.SetActive(false);
 
         AppManager.Instance.CanOpenApps = true;

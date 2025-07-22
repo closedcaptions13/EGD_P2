@@ -17,6 +17,7 @@ public class InfiniteRunnerPlayer : MonoBehaviour
         Usable
     }
 
+    int groundCount;
     bool isGrounded;
     JetpackState jetpack;
 
@@ -25,10 +26,14 @@ public class InfiniteRunnerPlayer : MonoBehaviour
     [SerializeField] private GameObject deathScreen;
     [SerializeField] private TMP_Text finalTime;
 
+    Vector3 initialLocation;
+
     void Start()
     {
         originalConstraints = GetComponent<Rigidbody2D>().constraints;
         deathScreen.SetActive(false);
+
+        initialLocation = transform.position;
     }
 
     void Awake()
@@ -81,6 +86,7 @@ public class InfiniteRunnerPlayer : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             isGrounded = true;
+            groundCount++;
         }
 
         if (isDeath || collision.gameObject.layer == LayerMask.NameToLayer("Damage"))
@@ -96,14 +102,19 @@ public class InfiniteRunnerPlayer : MonoBehaviour
     void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-            isGrounded = false;
+        {
+            groundCount--;
+            if(groundCount == 0)
+                isGrounded = false;
+        }
     }
 
     public void Restart()
     {
         Rigidbody.constraints = originalConstraints;
         InfiniteRunnerManager.Instance.StartPlaying();
-        
+
         deathScreen.SetActive(false);
+        transform.position = initialLocation;
     }
 }
