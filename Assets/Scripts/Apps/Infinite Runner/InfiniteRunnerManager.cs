@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 public class InfiniteRunnerManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class InfiniteRunnerManager : MonoBehaviour
     public float spawnRate;
 
     float lastSpawnTime;
+    float playTime;
 
     [SerializeField] private TMP_Text time;
 
@@ -21,6 +23,7 @@ public class InfiniteRunnerManager : MonoBehaviour
 
     public void StartPlaying()
     {
+        playTime = Time.time;
         lastSpawnTime = Time.time;
         IsPlaying = true;
     }
@@ -57,6 +60,6 @@ public class InfiniteRunnerManager : MonoBehaviour
             lastSpawnTime = Time.time;
         }
 
-        time.text = $"Time: {Time.timeSinceLevelLoad.ToString("F2")}";
+        time.text = $"Time: {Time.time - playTime:F2}";
     }
 }
