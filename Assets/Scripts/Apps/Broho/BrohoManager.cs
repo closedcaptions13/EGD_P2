@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class BrohoManager : MonoBehaviour
@@ -15,6 +17,10 @@ public class BrohoManager : MonoBehaviour
 
     private BrohoPlayer player;
 
+    [SerializeField] private TMP_Text time;
+    private float currTime;
+    // private Time startTime;
+
     public bool IsWithinLevel(Vector2 point)
     {
         var bounds = levelBounds.bounds;
@@ -26,6 +32,12 @@ public class BrohoManager : MonoBehaviour
     {
         Instance = this;
         player = FindAnyObjectByType<BrohoPlayer>();
+    }
+
+    void Update()
+    {
+        currTime = Time.time - TimeAtStart;
+        time.text = $"Time: {currTime.ToString("F2")}";
     }
 
     public const float StandardTelegraphTime = 1.2f;
@@ -46,9 +58,9 @@ public class BrohoManager : MonoBehaviour
         inst.acceleration = acceleration;
     }
 
-    public async UniTask ExecuteRandomFliers()
+    public IEnumerator ExecuteRandomFliers()
     {
-        await UniTask.WaitForSeconds(10);
+        yield return new WaitForSeconds(10);
 
         var startTime = Time.time;
 
@@ -60,30 +72,30 @@ public class BrohoManager : MonoBehaviour
                     + UnityEngine.Random.insideUnitCircle * 1.0f
                     - MathUtil.DegreesToVector2(angle) * 10,
                 angle
-            ).ToCoroutine());
+            ));
 
             var tfac = 5 * Mathf.Pow(0.98f, Time.time - startTime) + 0.1f;
-            await UniTask.WaitForSeconds(UnityEngine.Random.Range(StandardTelegraphTime * tfac, 0));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(StandardTelegraphTime * tfac, 0));
         }
     }
 
-    public async UniTask ExecuteCornerKillers()
+    public IEnumerator ExecuteCornerKillers()
     {
-        await UniTask.WaitForSeconds(20);
+        yield return new WaitForSeconds(20);
 
         while (true)
         {
             const float Radius = 10;
-            StartCoroutine(ExecuteBurstAt(new Vector2(-1, -1) * Radius, 25, 10).ToCoroutine());
-            StartCoroutine(ExecuteBurstAt(new Vector2(+1, -1) * Radius, 25, 10).ToCoroutine());
-            StartCoroutine(ExecuteBurstAt(new Vector2(+1, +1) * Radius, 25, 10).ToCoroutine());
-            StartCoroutine(ExecuteBurstAt(new Vector2(-1, +1) * Radius, 25, 10).ToCoroutine());
+            StartCoroutine(ExecuteBurstAt(new Vector2(-1, -1) * Radius, 25, 10));
+            StartCoroutine(ExecuteBurstAt(new Vector2(+1, -1) * Radius, 25, 10));
+            StartCoroutine(ExecuteBurstAt(new Vector2(+1, +1) * Radius, 25, 10));
+            StartCoroutine(ExecuteBurstAt(new Vector2(-1, +1) * Radius, 25, 10));
 
-            await UniTask.WaitForSeconds(StandardTelegraphTime * 4);
+            yield return new WaitForSeconds(StandardTelegraphTime * 4);
         }
     }
 
-    public async UniTask ExecutePatterns()
+    public IEnumerator ExecutePatterns()
     {
         IsPlaying = true;
 
@@ -91,36 +103,36 @@ public class BrohoManager : MonoBehaviour
         float WaitTime()
             => Mathf.Lerp(StandardTelegraphTime * 1.5f, StandardTelegraphTime * 0.7f, 1 - Mathf.Pow(0.99f, Time.time - startTime));
 
-        StartCoroutine(ExecuteRandomFliers().ToCoroutine());
-        StartCoroutine(ExecuteCornerKillers().ToCoroutine());
+        StartCoroutine(ExecuteRandomFliers());
+        StartCoroutine(ExecuteCornerKillers());
 
         while (true)
         {
-            StartCoroutine(ExecuteBurstAt(UnityEngine.Random.insideUnitCircle * 5).ToCoroutine());
-            await UniTask.WaitForSeconds(WaitTime());
+            StartCoroutine(ExecuteBurstAt(UnityEngine.Random.insideUnitCircle * 5));
+            yield return new WaitForSeconds(WaitTime());
 
             var repeatSpearWall = UnityEngine.Random.value < 0.3f ? 2 : 1;
             for (int i = 0; i < repeatSpearWall; i++)
             {
                 var loc = UnityEngine.Random.insideUnitCircle * 5;
-                StartCoroutine(ExecuteSpearWallAt(loc, Vector2.SignedAngle(Vector2.left, loc) - 90, 1.5f, 10).ToCoroutine());
-                await UniTask.WaitForSeconds(WaitTime());
+                StartCoroutine(ExecuteSpearWallAt(loc, Vector2.SignedAngle(Vector2.left, loc) - 90, 1.5f, 10));
+                yield return new WaitForSeconds(WaitTime());
             }
 
             if (UnityEngine.Random.value < 0.2f)
             {
                 var angle = UnityEngine.Random.Range(0, 360f);
-                StartCoroutine(ExecuteWaveWall(angle + 000, 3f, 0.0f, 20).ToCoroutine());
-                StartCoroutine(ExecuteWaveWall(angle + 090, 3f, 0.0f, 20).ToCoroutine());
-                StartCoroutine(ExecuteWaveWall(angle + 180, 3f, 1.5f, 20).ToCoroutine());
-                StartCoroutine(ExecuteWaveWall(angle + 270, 3f, 1.5f, 20).ToCoroutine());
+                StartCoroutine(ExecuteWaveWall(angle + 000, 3f, 0.0f, 20));
+                StartCoroutine(ExecuteWaveWall(angle + 090, 3f, 0.0f, 20));
+                StartCoroutine(ExecuteWaveWall(angle + 180, 3f, 1.5f, 20));
+                StartCoroutine(ExecuteWaveWall(angle + 270, 3f, 1.5f, 20));
 
-                await UniTask.WaitForSeconds(WaitTime() * 2f);
+                yield return new WaitForSeconds(WaitTime() * 2f);
             }
         }
     }
 
-    public async UniTask ExecuteBurstAt(Vector2 location, int radialCount = 10, float speed = 1)
+    public IEnumerator ExecuteBurstAt(Vector2 location, int radialCount = 10, float speed = 1)
     {
         Warning(circleWarningPrefab, location, 0, StandardTelegraphTime);
 
@@ -130,7 +142,7 @@ public class BrohoManager : MonoBehaviour
             Warning(lineWarningPrefab, location, angle, StandardTelegraphTime);
         }
 
-        await UniTask.WaitForSeconds(StandardTelegraphTime);
+        yield return new WaitForSeconds(StandardTelegraphTime);
 
         for (var i = 0; i < radialCount; i++)
         {
@@ -141,29 +153,29 @@ public class BrohoManager : MonoBehaviour
         }
     }
 
-    public async UniTask ExecuteSpearAt(Vector2 location, float angle)
+    public IEnumerator ExecuteSpearAt(Vector2 location, float angle)
     {
         Warning(circleWarningPrefab, location, angle, StandardTelegraphTime);
         Warning(lineWarningPrefab, location, angle, StandardTelegraphTime);
-        await UniTask.WaitForSeconds(StandardTelegraphTime);
+        yield return new WaitForSeconds(StandardTelegraphTime);
 
         ObstacleLinear(bulletPrefab, location, MathUtil.DegreesToVector2(angle) * 40, 2);
     }
 
-    public async UniTask ExecuteSpearWallAt(Vector2 location, float angle, float apart, int count)
+    public IEnumerator ExecuteSpearWallAt(Vector2 location, float angle, float apart, int count)
     {
         for (var i = 0; i < count; i++)
         {
             StartCoroutine(ExecuteSpearAt(
                 location + (count / 2f - i) * apart * MathUtil.DegreesToVector2(angle + 90),
                 angle
-            ).ToCoroutine());
+            ));
 
-            await UniTask.WaitForSeconds(1f / count);
+            yield return new WaitForSeconds(1f / count);
         }
     }
 
-    public async UniTask ExecuteWaveWall(float angle, float apart, float offset, int count, float distance = 10)
+    public IEnumerator ExecuteWaveWall(float angle, float apart, float offset, int count, float distance = 10)
     {
         var direction = MathUtil.DegreesToVector2(angle);
 
@@ -175,10 +187,10 @@ public class BrohoManager : MonoBehaviour
             StartCoroutine(ExecuteSpearAt(
                 loc + (offset + (count / 2f - i) * apart) * axs,
                 angle
-            ).ToCoroutine());
+            ));
         }
 
-        await UniTask.Yield();
+        yield break;
     }
 
     public void KillGameplay()
@@ -193,12 +205,17 @@ public class BrohoManager : MonoBehaviour
 
     public void BeginGameplay()
     {
-        StartCoroutine(ExecutePatterns().ToCoroutine());
+        StartCoroutine(ExecutePatterns());
         TimeAtStart = Time.time;
     }
 
     void Start()
     {
         BeginGameplay();
+    }
+
+    public float GetCurrTime()
+    {
+        return currTime;
     }
 }

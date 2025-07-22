@@ -1,8 +1,17 @@
+using TMPro;
 using UnityEngine;
 
 public class BrohoPlayer : MonoBehaviour
 {
     public float moveSpeed;
+
+    [SerializeField] private GameObject deathScreen;
+    [SerializeField] private TMP_Text finalTime;
+
+    void Start()
+    {
+        deathScreen.SetActive(false);
+    }
 
     void Update()
     {
@@ -31,6 +40,23 @@ public class BrohoPlayer : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Damage"))
         {
             BrohoManager.Instance.KillGameplay();
+            Death();
         }
+    }
+
+    void Death()
+    {
+        finalTime.text = $"Final Time: {BrohoManager.Instance.GetCurrTime().ToString("F2")}";
+        deathScreen.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void Restart()
+    {
+        deathScreen.SetActive(false);
+        Time.timeScale = 1;
+        //BrohoManager.Instance.BeginGameplay();
+        //Instantiate(BrohoManager.Instance);
+
     }
 }

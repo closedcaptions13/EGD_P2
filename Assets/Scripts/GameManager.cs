@@ -6,13 +6,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GmaeManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     float speedupEffect = 0;
     float targetSpeedupEffect = 0;
     float timeOfLastSpeedup = 0;
     float timeOfStartActualSpeedup = 0;
     bool isDistracted = false;
+    bool isSpeedingUp = false;
 
     [Header("Timing")]
     [SerializeField] float speedupSharpness = 5;
@@ -30,26 +31,26 @@ public class GmaeManager : MonoBehaviour
     public async UniTask Yell()
     {
         isDistracted = false;
-        foreach (var app in AppManager.Instance.OpenApps)
+        foreach (var app in AppManager.Instance.OpenApps.ToList())
         {
             if (app.AppRoot.isDistraction)
                 AppManager.Instance.CloseApp(app);
         }
 
-        AudioManager.PauseLecture();
-
         AppManager.Instance.CanOpenApps = false;
-        await UniTask.WaitForSeconds(0.1f);
 
+        Debug.Log("YELL");
         profAnimator.Play("profBark", 0);
         await AudioManager.PlayBarkAsync((int)SpecificBarks.GENERICBARK1);
-        // TODO: choose real bark //
+        speedupEffect = 0;
+        AudioManager.ChangeLectureSpeed(1);
 
         AppManager.Instance.CanOpenApps = true;
     }
 
     public async UniTask FinishLecture()
     {
+        AudioManager.PauseLecture();
         AudioManager.PlaySound(SoundType.STARTQUIZ);
 
         AppManager.Instance.CanOpenApps = false;
@@ -89,7 +90,7 @@ public class GmaeManager : MonoBehaviour
         {
             if (!isDistracted)
             {
-                timeOfLastSpeedup = Time.time;
+                timeOfLastSpeedup = Time.timeSinceLevelLoad;
                 isDistracted = true;
             }
         }
@@ -98,15 +99,23 @@ public class GmaeManager : MonoBehaviour
             isDistracted = false;
         }
 
-        var shouldSpeedUp = isDistracted && Time.time - timeOfLastSpeedup > timeToSpeedup;
+        var shouldSpeedUp = isDistracted && Time.timeSinceLevelLoad - timeOfLastSpeedup > timeToSpeedup;
         targetSpeedupEffect = shouldSpeedUp ? 1 : 0;
 
         if (shouldSpeedUp)
         {
-            timeOfStartActualSpeedup = Time.time;
+            if (!isSpeedingUp)
+            {
+                timeOfStartActualSpeedup = Time.timeSinceLevelLoad;
+                isSpeedingUp = true;
+            }
+        }
+        else
+        {
+            isSpeedingUp = false;
         }
 
-        if (shouldSpeedUp && Time.time - timeOfStartActualSpeedup > timeToYell)
+        if (isSpeedingUp && Time.timeSinceLevelLoad - timeOfStartActualSpeedup > timeToYell)
         {
             // YELL //
             Yell().Forget();
@@ -120,7 +129,7 @@ public class GmaeManager : MonoBehaviour
 
         AudioManager.ChangeLectureSpeed(Mathf.Lerp(1, fastSpeed, speedupEffect));
 
-        if (AudioManager.LectureIsFinished)
+        if (AudioManager.LectureIsFinished || Input.GetKeyDown(KeyCode.Alpha9))
         {
             FinishLecture().Forget();
         }

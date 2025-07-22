@@ -133,6 +133,8 @@ public class AppManager : MonoBehaviour
 
     public void CloseApp(AppInstance inst)
     {
+        openApps.Remove(inst.Scene.name);
+        
         inst.CleanupRenderTexure();
         GameObject.Destroy(inst.gameObject);
 
