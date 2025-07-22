@@ -76,7 +76,9 @@ public class AudioManager : MonoBehaviour
     public static float TimeInLecture
         => instance.lectureAudioSource.time;
     public static bool LectureIsFinished
-        => instance && !instance.lectureAudioSource.isPlaying;
+        => instance
+        && instance.lectureAudioSource.clip == instance.soundList[(int)SoundType.LECTURE]
+        && !instance.lectureAudioSource.isPlaying;
 
     public static void PlaySound(int sound)
     {
@@ -136,7 +138,6 @@ public class AudioManager : MonoBehaviour
 
     public static void ChangeLectureSpeed(float newSpeed)
     {
-        if (!instance) return;
         instance.lectureAudioSource.pitch = newSpeed;
     }
 

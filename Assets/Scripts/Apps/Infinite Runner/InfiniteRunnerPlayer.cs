@@ -81,8 +81,6 @@ public class InfiniteRunnerPlayer : MonoBehaviour
 
         if (isDeath || collision.gameObject.layer == LayerMask.NameToLayer("Damage"))
         {
-            Debug.Log($"{Time.time} :: you died fucking idiot kys");
-
             deathScreen.SetActive(true);
             finalTime.text = $"Final Time: {Time.timeSinceLevelLoad.ToString("F2")}";
             Time.timeScale = 0;

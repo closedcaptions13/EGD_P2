@@ -8,16 +8,25 @@ public class DraggableUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     Vector3 dragOffset;
     Vector3 startPos;
 
+    new Camera camera;
+
+    void Start()
+    {
+        camera = gameObject.scene
+            .GetRootGameObjects()[0]
+            .GetComponentInChildren<Camera>();
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        startPos = Camera.main.WorldToScreenPoint(transform.position);
+        startPos = camera.WorldToScreenPoint(transform.position);
         dragOffset = startPos - (Vector3)eventData.position;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         var pos = (Vector3)eventData.position + dragOffset;
-        transform.position = Camera.main.ScreenToWorldPoint(pos);
+        transform.position = camera.ScreenToWorldPoint(pos);
 
         var rectTransform = transform as RectTransform;
         var parentRectTransform = transform.parent as RectTransform;

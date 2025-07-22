@@ -567,7 +567,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 809261384}
   m_Direction: 0
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -973,7 +973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   appName: Example App
   canvas: {fileID: 129524846}
-  isDistraction: 0
+  isDistraction: 1
 --- !u!4 &1424236541
 Transform:
   m_ObjectHideFlags: 0
@@ -1235,8 +1235,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1033453708}
   m_HandleRect: {fileID: 1033453707}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.99999994
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

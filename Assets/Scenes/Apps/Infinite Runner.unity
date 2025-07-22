@@ -2021,7 +2021,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   appName: Runnify
   canvas: {fileID: 129524846}
-  isDistraction: 0
+  isDistraction: 1
 --- !u!4 &1424236541
 Transform:
   m_ObjectHideFlags: 0

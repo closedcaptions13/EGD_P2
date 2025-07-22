@@ -51,7 +51,7 @@ public class SnakeManager : MonoBehaviour
         snakeDeltas = new()
         {
             new(0, 1),
-            new(0, 1)
+            new(0, 1),
         };
 
         direction = previousDirection = Vector2Int.zero;
@@ -160,21 +160,32 @@ public class SnakeManager : MonoBehaviour
         if (!AppRoot.SelectedForObject(this))
             return;
 
-        var targetDirection = Vector2Int.zero;
-
-        if (Input.GetKeyDown(KeyCode.W))
-            targetDirection = Vector2Int.up;
-        else if (Input.GetKeyDown(KeyCode.A))
-            targetDirection = Vector2Int.left;
-        else if (Input.GetKeyDown(KeyCode.S))
-            targetDirection = Vector2Int.down;
-        else if (Input.GetKeyDown(KeyCode.D))
-            targetDirection = Vector2Int.right;
-
-        if (targetDirection != Vector2Int.zero && targetDirection != -previousDirection)
+        if (!isMoving)
         {
-            direction = targetDirection;
-            isMoving = true;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                direction = Vector2Int.left;
+                isMoving = true;
+            }
+        }
+        else
+        {
+            var targetDirection = Vector2Int.zero;
+
+            if (Input.GetKeyDown(KeyCode.W))
+                targetDirection = Vector2Int.up;
+            else if (Input.GetKeyDown(KeyCode.A))
+                targetDirection = Vector2Int.left;
+            else if (Input.GetKeyDown(KeyCode.S))
+                targetDirection = Vector2Int.down;
+            else if (Input.GetKeyDown(KeyCode.D))
+                targetDirection = Vector2Int.right;
+
+            if (targetDirection != Vector2Int.zero && targetDirection != -previousDirection)
+            {
+                direction = targetDirection;
+                isMoving = true;
+            }
         }
     }
 
