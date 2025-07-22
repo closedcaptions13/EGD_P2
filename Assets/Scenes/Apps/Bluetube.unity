@@ -566,8 +566,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 809261385}
   m_HandleRect: {fileID: 809261384}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.9999998
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -971,7 +971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35942f9c277a6134a8ef8c5f0af2fa4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appName: Example App
+  appName: Bluetube
   canvas: {fileID: 129524846}
   isDistraction: 1
 --- !u!4 &1424236541
@@ -1317,7 +1317,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -766.7473, y: 0.0025024414}
+  m_AnchoredPosition: {x: -766.74725, y: 0.0025024414}
   m_SizeDelta: {x: -1533.495, y: 0.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2076536330

@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DesktopIcon : MonoBehaviour, IPointerClickHandler
 {
@@ -21,12 +22,12 @@ public class DesktopIcon : MonoBehaviour, IPointerClickHandler
     public string application;
 
     private TextMeshProUGUI text;
-    private SpriteRenderer sprite;
+    private Image sprite;
 
     void Awake()
     {
         text = GetComponentInChildren<TextMeshProUGUI>();
-        sprite = GetComponent<SpriteRenderer>();
+        sprite = GetComponentInChildren<Image>();
     }
 
     void Update()
