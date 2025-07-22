@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class BrohoManager : MonoBehaviour
@@ -16,6 +17,10 @@ public class BrohoManager : MonoBehaviour
 
     private BrohoPlayer player;
 
+    [SerializeField] private TMP_Text time;
+    private float currTime;
+    // private Time startTime;
+
     public bool IsWithinLevel(Vector2 point)
     {
         var bounds = levelBounds.bounds;
@@ -27,6 +32,12 @@ public class BrohoManager : MonoBehaviour
     {
         Instance = this;
         player = FindAnyObjectByType<BrohoPlayer>();
+    }
+
+    void Update()
+    {
+        currTime = Time.time - TimeAtStart;
+        time.text = $"Time: {currTime.ToString("F2")}";
     }
 
     public const float StandardTelegraphTime = 1.2f;
@@ -201,5 +212,10 @@ public class BrohoManager : MonoBehaviour
     void Start()
     {
         BeginGameplay();
+    }
+
+    public float GetCurrTime()
+    {
+        return currTime;
     }
 }
