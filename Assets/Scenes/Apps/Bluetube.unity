@@ -566,8 +566,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 809261385}
   m_HandleRect: {fileID: 809261384}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -971,9 +971,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35942f9c277a6134a8ef8c5f0af2fa4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appName: Bluetube
+  appName: Example App
   canvas: {fileID: 129524846}
-  isDistraction: 1
+  isDistraction: 0
 --- !u!4 &1424236541
 Transform:
   m_ObjectHideFlags: 0
@@ -1007,9 +1007,13 @@ MonoBehaviour:
   videoPlayer: {fileID: 1271284937}
   videos:
   - url: https://drive.usercontent.google.com/u/0/uc?id=17hWQe7jH8LHtZJ78FJz_Lm_ci6tHaI2F&export=download
-    name: Peak
+    name: 'Tf2: A GNR'
   - url: https://drive.usercontent.google.com/u/0/uc?id=13qS3Ab6ENULIL7LTIxbKFfRqaxPtR7aV&export=download
-    name: Balala joked poker
+    name: Dancing Penguin
+  - url: https://video-downloads.googleusercontent.com/ADGPM2kNol3_976JGLdStKQ-0HSSNO5Qz-H0gzlrAT5kAVoxqwk66A4m9zRhDkz8E9JpVaFcjPSAA2vEmvn5pR0YkVghSAJWRFRBeYQZiLP9I5BvGnNdhg1NENStPklLNrYjVozphLmnhfgARBf3gE158MM80YwPyl5D5GBs82-NGP_6aHMeCKb3gPzF862gV6N_xHGDSgQX_tEd-WnFMbfBZ3Mk1UvWTN6b0lIZvoF0E1-8n_rJ-gu_hiL6BUtGGMNAgddtdLa5xC5LQedMm04cevFdIy--Hkeb4M5BnnX9kRqRQhA1LgiqzxE698lz6AvuPQZr7D4uw2p2ErWC5qLJX-_PKiCe1RSga8SOKCiLu5wRGsKl4h1828DZ0hDWY_xsZdkt3gEHgCWqrnBKI1bE8W0skaLJ2pG0Dnv5qEZHrB3hdQI2eB18dutxrnwU_oRw3g29RwoHj_Bf3dU5T_9RcXbqpIHzPiTnkYOY4c7rxlDoaJrRwr2na4rGfsZed2k7nIX3Jx8U9ngg_8R1GMosZ70V0KrTfCV2xh_qDjureSjiQCb8F4txpuFW_T1YogPytcB_D9xMHfsgv4WSiAN3BQqXvhFzgK26aYiUM9V8oVWAFSk052CbHwb50qtZbvNEp7g4dU9p66XJ4UE6UK08EzVZiDKlfsn-Pp_yDhczlJzCvfWp-fvJ0KUd7yy1UMHW2bpVV-GnJ42M6BjJKcIVYkI22Va8T-ecjg0AImeeZy23yH1NcHHzPjA0_o2XmgjPli704geIl61CsZTbdGyyjZj1yMSz8kOs4mMTHwSuC01BmNdhDO8U03DUElflF4mqOBE87F-KYSfJCi-3t-OFj-1WWrbX15CuvJlf-iIwKxcKhDErzF9O4G-x4rZ0T2k34VT6wK1f_IP8aJeiH4QYBJlNNQFUBwPLmR8qwgUiC-aule5H7zafSUCfW19Y1gYh37Uc33Cu7-ruxIIB6Tn35D_akLG--b9l_mxbfhjyzXphl0flEd9PWJZJd38AtXToo4xxkvp5kdb04CzHNgsTmIXBsIYdHbQtAN-A0OKhiCMwrYy41L4?authuser=0
+    name: BMC Live
+  - url: https://video-downloads.googleusercontent.com/ADGPM2m_Ap1Q5Srda1nIWWVtNvQCSGSFxpTSg1J1p8PJP_aXD5HDyRLG5VwAMRGOjPQ4uwnZ2Y0hxxwpxy_2CcGhvdg_l3-C7vmaE1bKryAJpo7aYMGv4bn7-u48z0oklkzO7I_DHHCCmcC2yPhudFvc7XGO2wGvHF5KruPk5sceJJAVJhtnb_ENU40lyDesLVY3UK_f8VaAN2fX1SaX5PpTafG7PF5GfICGMfzOFpsk4fAEhUL99oRuVc2hEX9lwu139nZhvLArGr3qkyC5kkOox79AKC_hw4qtlsvYIfS454vi0h8dRO2KhFQ-zGzh93YioyAI28kpIf1bgLDDuHUPO3Y34aOYYl1oztOmhQynKwxCGZuaoxkRNbpnondKe1drDd0MViM-6ORxjY4EdPdPTHmozq7ikpmRAf8xgWbU_0CrPvkFmTyjUvUqwf9Xt1rKBYUHxn_zvAbb5Ysn9LnhNdDucNJDOZ0VTw0Qz8PURQhhboK7cDPP9QWux38rtGTi9Tjx5QkO3ZkjUHj5L4aGxvT91tQzgPDDF4mGXv5rtXetj32aA3AIju3ltctPZLnjdskwx9ee1aMLPLHS0a-3spdZUvVO0cmWGR1KE12moZ6PwRte22HJzk_qkq_eVmwZbCbKMV4ZM4qr-e0LM7QBJhPpm3E15Migz8y47wTIOIHWvJaOaNB3d1er6Nr1yjadBF2ttYUbppyb8TSZJl4KP7i5uJUrzC0HNlMGfR9nKqBEhWGtV0yEtqALn6PUROoe1f5_xWuhsNC-vxBGWYbD9V25cQNr6of8sgary7XCkuSlRI5ep8abzM-MiwYO-J6cP7pKeTjfQ7dzxPMXlf4usNH5tcX9hCUs-n0OM2MnXnDTZGT2TK3N7nfS1Loguq-21VzXVRI221Otmx7afMW84yp9EmMsEo1e6r6a17JFEtA1SFTXRpagpAuN_Z3BqYPhziJ_3U2E_2VoMWAbFLXUUm_EnUz_AmItyAzTXc_xBAiUgnbAyHLyJWzP6kU-V_MbB965Ee6m122F0obnzX9ONZhFCNcglTIMqQBxmSlNSs1eNonzBhs?authuser=0
+    name: Flatworm Friday
   buttonPrefab: {fileID: 4614032344151105557, guid: d400ba79b31cbb141b4429d49573833c, type: 3}
   videoButtonHolder: {fileID: 1490035122}
 --- !u!1 &1467271991
@@ -1317,7 +1321,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -766.74725, y: 0.0025024414}
+  m_AnchoredPosition: {x: -766.7472, y: 0.0025024414}
   m_SizeDelta: {x: -1533.495, y: 0.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2076536330
