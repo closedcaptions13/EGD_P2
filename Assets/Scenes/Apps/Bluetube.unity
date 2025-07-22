@@ -566,8 +566,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 809261385}
   m_HandleRect: {fileID: 809261384}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.99999994
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -971,9 +971,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35942f9c277a6134a8ef8c5f0af2fa4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appName: Example App
+  appName: Bluetube
   canvas: {fileID: 129524846}
-  isDistraction: 0
+  isDistraction: 1
 --- !u!4 &1424236541
 Transform:
   m_ObjectHideFlags: 0
@@ -1014,6 +1014,8 @@ MonoBehaviour:
     name: BMC Live
   - url: https://video-downloads.googleusercontent.com/ADGPM2m_Ap1Q5Srda1nIWWVtNvQCSGSFxpTSg1J1p8PJP_aXD5HDyRLG5VwAMRGOjPQ4uwnZ2Y0hxxwpxy_2CcGhvdg_l3-C7vmaE1bKryAJpo7aYMGv4bn7-u48z0oklkzO7I_DHHCCmcC2yPhudFvc7XGO2wGvHF5KruPk5sceJJAVJhtnb_ENU40lyDesLVY3UK_f8VaAN2fX1SaX5PpTafG7PF5GfICGMfzOFpsk4fAEhUL99oRuVc2hEX9lwu139nZhvLArGr3qkyC5kkOox79AKC_hw4qtlsvYIfS454vi0h8dRO2KhFQ-zGzh93YioyAI28kpIf1bgLDDuHUPO3Y34aOYYl1oztOmhQynKwxCGZuaoxkRNbpnondKe1drDd0MViM-6ORxjY4EdPdPTHmozq7ikpmRAf8xgWbU_0CrPvkFmTyjUvUqwf9Xt1rKBYUHxn_zvAbb5Ysn9LnhNdDucNJDOZ0VTw0Qz8PURQhhboK7cDPP9QWux38rtGTi9Tjx5QkO3ZkjUHj5L4aGxvT91tQzgPDDF4mGXv5rtXetj32aA3AIju3ltctPZLnjdskwx9ee1aMLPLHS0a-3spdZUvVO0cmWGR1KE12moZ6PwRte22HJzk_qkq_eVmwZbCbKMV4ZM4qr-e0LM7QBJhPpm3E15Migz8y47wTIOIHWvJaOaNB3d1er6Nr1yjadBF2ttYUbppyb8TSZJl4KP7i5uJUrzC0HNlMGfR9nKqBEhWGtV0yEtqALn6PUROoe1f5_xWuhsNC-vxBGWYbD9V25cQNr6of8sgary7XCkuSlRI5ep8abzM-MiwYO-J6cP7pKeTjfQ7dzxPMXlf4usNH5tcX9hCUs-n0OM2MnXnDTZGT2TK3N7nfS1Loguq-21VzXVRI221Otmx7afMW84yp9EmMsEo1e6r6a17JFEtA1SFTXRpagpAuN_Z3BqYPhziJ_3U2E_2VoMWAbFLXUUm_EnUz_AmItyAzTXc_xBAiUgnbAyHLyJWzP6kU-V_MbB965Ee6m122F0obnzX9ONZhFCNcglTIMqQBxmSlNSs1eNonzBhs?authuser=0
     name: Flatworm Friday
+  - url: https://video-downloads.googleusercontent.com/ADGPM2n5NP5iQuHS4LMPFBe0ib1tODg5lKBiGrTDt62XzPC94ACxp8Q4b9ckG7aZMiCuvKc_dVbr678Zt84mky6hRrrvhY5aK3UAD9BZ8k6ZRucj4aJ3jHmYMCGOyKJ5odW1mS9Sa6AWQs2n94bL0MWf2ZdxqSANXJYY6iv1NfMstMZeONGVsuYyYW29NSyOiZh1FronMIK2bTqZlCnvWPX50fU-_ZaYUtwxRpwXpArW5e22VPdv3FAwCBV5JO-GTDAgIqp27sBsonCTwiKp3N6SuIkurWqPaHPEOIkJ5FQzPYOV_xsDXFyK4f9Uxvez0pPUhagyYMk1f7gkGJVMY3nlrsvGfuNWehnVou4kM3bZn7FnkIc0P3NDEueNEJMOOgDcfUOkj-qMjamuqJwKoTL_P9kcuxNknSEmQZpp6EJUMXncXDX8e2AH4tNHDM824n1McxHAXKTa0_7hNCevp2EcCX5Ru-AEU8XZXCSRrNmHIQJ46K-QBVPCUdPAE2nLUvYsWBEPmi3Xep5EuhDlAKtqDWp6tAyXPdPr-b52YNY1OFfZ3K6Fyp4PMo7fi7rWwKghF7f3q6GVXwKuvBOaGk9jjWNNFoP0ASG0mJz-EL1RbpcrAQ-IzrUJrdpeXYUKzdNI-yaY6QEAWFEyWfhynrp75C98REarlUqGSsrx6g92b_S0TAEyq_gvxJighohxV_I4JXnyELjDj7FWOisHInAhs2BAVqe3uEzgHghW2BvQBQNe5wq_VRe8xvfN75BL1acl11mpNFmiyQnfFvmWqSfvM7_gLxAAi9im3MsCvnNAIMP8s616N72NZFMnysJSUgF3n6bdSQJpCl2isMCRiEdCfMcAIgYFLy7_jUxUkJTv38yykgqMSA4xwpBXkeFYx7qCLBi4lbvjcMCK0-hd1a9b9HqxR3V22kK_Md-B7pkREzvoXtiLiaNQLJsRA66f-EFgIajJeq4-g_LD1BUAd8ruSJcJbFW1Rd64b1I-vqtrQmANFLI8VGXt8UOUmnG9-eRtmluxFLocTl6nfhjAigXHi-hefhj3YCWw8NmV5G8bgJDG136d68E?authuser=0
+    name: Caprisun
   buttonPrefab: {fileID: 4614032344151105557, guid: d400ba79b31cbb141b4429d49573833c, type: 3}
   videoButtonHolder: {fileID: 1490035122}
 --- !u!1 &1467271991
@@ -1321,7 +1323,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -766.7472, y: 0.0025024414}
+  m_AnchoredPosition: {x: -766.74713, y: 0.0025024414}
   m_SizeDelta: {x: -1533.495, y: 0.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2076536330
